@@ -36,7 +36,8 @@ def index():
 @app.route('/newpost', methods=['GET'])
 def add_blog():
 
-    return render_template('add-a-blog.html', title="Add a Blog", blog_title="", blog="")
+    return render_template('add-a-blog.html', title="Add a Blog", 
+        blog_title="" , blog="" , title_error="" , blog_error="")
 
 
 @app.route('/newpost', methods=['POST'])
@@ -44,11 +45,23 @@ def added_blog():
 
     blog_title = request.form['blog_title']
     blog = request.form['blog']
-    new_blog = Blog(blog_title,blog)
-    db.session.add(new_blog)
-    db.session.commit()
+    blog_error = ""
+    title_error = ""
+    if blog_title == "" or blog == "":
+        if blog_title == "":
+            title_error = "Please fill in the title"
+        if blog == "":
+            blog_error = "Please fill in the blog"
+        return render_template('add-a-blog.html',title="Add a Blog", 
+            blog_title = blog_title, blog = blog, title_error = title_error, 
+            blog_error = blog_error )
+        
+    else:    
+        new_blog = Blog(blog_title,blog)
+        db.session.add(new_blog)
+        db.session.commit()
 
-    return redirect('/blog?blog_id='+str(new_blog.blog_id))
+        return redirect('/blog?blog_id='+str(new_blog.blog_id))
 
 if __name__ == '__main__':
     app.run()

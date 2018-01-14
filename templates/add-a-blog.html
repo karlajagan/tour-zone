@@ -3,21 +3,20 @@
 {% block content %}
     
     <form method='post'>
-        <h1 class="main">Add a blog</h1>
+        <h1>Add a blog</h1>
         <hr />
         <div class="container">
-        <label>
-            
+        <label>   
             Blog title <br>
-            <input type="text" name='blog_title' size="30" class="main"/>
+            <input type="text" name='blog_title' size="30" class="main" value="{{blog_title}}"/>
         </label>
-        <br>
+        <p class="error">{{title_error}}</p>
         <br>
         <label>
             Blog content <br>
-            <textarea name='blog' rows="5" cols="60"></textarea>
+            <textarea name='blog' rows="5" cols="60" value="{{blog}}"></textarea>
         </label>
-        <br>
+        <p class="error">{{blog_error}}</p>       
         <br>
         <input type="submit" value='Add Blog' />
         </div>
