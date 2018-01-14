@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Build a blog</h1>
+<h1>{{title}}</h1>
 <hr>
 {% if blogs|length == 0 %}
     <p>No blogs added</p>
@@ -9,7 +9,7 @@
 
         <ul>
             {% for blog in blogs %}
-            <h2>{{blog.blog_title}}</h2>
+            <h2><a href="/main-blog?blog_id={{blog.blog_id}}">{{blog.blog_title}}</a></h2>
             <p>{{blog.blog}}</p>
             <hr>
             {% endfor %}

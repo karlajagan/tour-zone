@@ -24,12 +24,14 @@ def index():
     blog_id = request.args.get('blog_id', '')
     if blog_id == "":
         blogs = Blog.query.all()
+        return render_template('display_blogs.html', title="Build a Blog Project", 
+            blogs=blogs)
     else:
         blog_id = int(blog_id)
-        blogs = Blog.query.filter_by(blog_id=blog_id).all()
-    return render_template('display_blogs.html', title="Build a Blog Project", 
-        blogs=blogs)
-
+        blog = Blog.query.get(blog_id)
+        return render_template('display_blog.html', title=blog.blog_title, 
+            blog=blog.blog)
+    
 
 @app.route('/add-a-blog', methods=['GET'])
 def add_blog():

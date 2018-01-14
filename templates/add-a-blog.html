@@ -3,18 +3,24 @@
 {% block content %}
     
     <form method='post'>
-        <h1>Add a blog</h1>
+        <h1 class="main">Add a blog</h1>
+        <hr />
+        <div class="container">
         <label>
-            New blog:
-            <input type="text" name='blog_title' />
+            
+            Blog title <br>
+            <input type="text" name='blog_title' size="30" class="main"/>
         </label>
-        
-
+        <br>
+        <br>
         <label>
-            Content:
-            <input type="text" name='blog' />
+            Blog content <br>
+            <textarea name='blog' rows="5" cols="60"></textarea>
         </label>
+        <br>
+        <br>
         <input type="submit" value='Add Blog' />
+        </div>
     </form>
 
     <hr />
