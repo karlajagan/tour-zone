@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <form method='post'>
+        <h1>Add a blog</h1>
+        <label>
+            New blog:
+            <input type="text" name='blog_title' />
+        </label>
+        
+
+        <label>
+            Content:
+            <input type="text" name='blog' />
+        </label>
+        <input type="submit" value='Add Blog' />
+    </form>
+
+    <hr />
+
+{% endblock %}
