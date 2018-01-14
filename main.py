@@ -18,7 +18,7 @@ class Blog(db.Model):
         self.blog_title = blog_title
         self.blog = blog
         
-@app.route('/main-blog', methods=['GET'])
+@app.route('/blog', methods=['GET'])
 def index():
 
     blog_id = request.args.get('blog_id', '')
@@ -33,13 +33,13 @@ def index():
             blog=blog.blog)
     
 
-@app.route('/add-a-blog', methods=['GET'])
+@app.route('/newpost', methods=['GET'])
 def add_blog():
 
     return render_template('add-a-blog.html', title="Add a Blog", blog_title="", blog="")
 
 
-@app.route('/add-a-blog', methods=['POST'])
+@app.route('/newpost', methods=['POST'])
 def added_blog():
 
     blog_title = request.form['blog_title']
@@ -48,7 +48,7 @@ def added_blog():
     db.session.add(new_blog)
     db.session.commit()
 
-    return redirect('/main-blog?blog_id='+str(new_blog.blog_id))
+    return redirect('/blog?blog_id='+str(new_blog.blog_id))
 
 if __name__ == '__main__':
     app.run()
