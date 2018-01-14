@@ -1,0 +1,12 @@
+h1 { 
+    text-align: center;
+    font-style: italic;
+}
+.error {
+    color: red;
+    font-style: italic;
+}
+.container {
+    text-align: center;
+    background-color: yellow;
+}
