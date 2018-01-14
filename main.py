@@ -23,7 +23,7 @@ def index():
 
     blog_id = request.args.get('blog_id', '')
     if blog_id == "":
-        blogs = Blog.query.all()
+        blogs = Blog.query.order_by(Blog.blog_id.desc()).all()
         return render_template('display_blogs.html', title="Build a Blog Project", 
             blogs=blogs)
     else:
