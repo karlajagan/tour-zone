@@ -16,3 +16,21 @@ h1 {
     text-align: center;
     background-color: rgb(211, 204, 204);
 }
+
+a {
+    color: purple;
+}
+nav ul {
+    padding: 0;
+    display: inline-block;
+}
+
+nav ul li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 15px;
+}
+
+nav #user-account {
+    float: right;
+}
