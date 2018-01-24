@@ -1,28 +1,30 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>Register to the Best Blogs Online!</h1>
-<form action="/register" method="post">
-    <table>
-        <tr>
-            <td><label for="email">Email</label></td>
-            <td>
-                <input name="email" type="email" value="{{ email }}">
-            </td>
-        </tr>
-        <tr>
-            <td><label for="password">Password</label></td>
-            <td>
-                <input name="password" type="password">
-            </td>
-        </tr>
-        <tr>
-            <td><label for="verify">Verify Password</label></td>
-            <td>
-                <input name="verify" type="password">
-            </td>
-        </tr>
-    </table>
-    <input type="submit" value="Register">
-</form>
+    <form action='/register' method='post'>
+        <h1>Sign Up Page</h1>
+        <hr>
+        <br>
+        <p>* fields are mandatory</p>
+        <br>
+        <label>Username: *
+            <input name="username" type="text" value='{{username}}'/>
+        </label> 
+            <p class="error">{{username_error}}</p>
+        <label>Password: *
+            <input name="password" type="password"  value='{{password}}'/>
+        </label>
+            <p class="error">{{password_error}}</p>       
+        <label>Confirm Password: *
+                <input name="verify" type="password" value='{{verify}}'/>
+        </label>
+            <p class="error">{{validate_error}}</p>
+        <label>Email:
+                <input name="email" type="text" value='{{email}}' />
+        </label> 
+            <p class="error">{{email_error}}</p>
+        <input type = "submit" value="Register" />
+        <br>
+
+    </form>
+    
 {% endblock %}

@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import re
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -13,7 +14,7 @@ class Blog(db.Model):
 
     blog_id = db.Column(db.Integer, primary_key=True)
     blog_title = db.Column(db.String(100))
-    blog = db.Column(db.String(300))
+    blog = db.Column(db.String(500))
     date_stamp = db.Column(db.DateTime)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
@@ -26,28 +27,56 @@ class Blog(db.Model):
 class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
     email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(50))
+    password = db.Column(db.String(100))
     blogs = db.relationship('Blog', backref='owner')
 
-    def __init__(self, email, password):
+    def __init__(self, username, email, password):
+        self.username = username
         self.email = email
         self.password = password
 
+def is_space(word):
+    if ' ' in word:
+        return True
+    else:
+        return False
+
+def validate_field(field,text):
+    error = ""
+    if field == "" and text != "Email ":
+        error = text+"must not be empty"
+    elif is_space(field):
+        error = text+"should not contain spaces"
+        field = ""
+    else:
+        if len(field) <= 3 or len(field) >= 20:
+            error = text+"must have between 3 and 20 characters"
+            field = ""
+    return error, field   
+
+def validate_email_re(field):
+    pattern = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+    if pattern.match(field):
+        return ""
+    else:
+        return "email not valid"
+
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'register']
-    if request.endpoint not in allowed_routes and 'email' not in session:
-        return redirect('/login') 
+    allowed_routes = ['login', 'register', 'index', 'blog_list']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/') 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
         if user and user.password == password:
-            session['email'] = email
+            session['username'] = username
             flash('logged in')
             return redirect('/blog')
         else:
@@ -58,31 +87,79 @@ def login():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
+        username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         verify = request.form['verify']
 
-        existing_user = User.query.filter_by(email=email).first()
+        username_error = ''
+        password_error = ''
+        validate_error = ''
+        email_error = ''
+
+        existing_user = User.query.filter_by(username=username).first()
         
         if not existing_user:
-            new_user = User(email,password)
-            db.session.add(new_user)
-            db.session.commit()
-            session['email'] = email
-            return redirect('/blog')
+
+            username_error, username = validate_field(username,"Username ")
+    
+            password_error, password = validate_field(password,"Password ")
+            
+            validate_error, val_password = validate_field(verify,"Password ")
+            
+            if verify != password:
+                validate_error = "The passwords are not matching"
+                password = ""
+                verify = ""
+
+            if email != '':
+                email_error, email = validate_field(email,"Email ")
+                if email_error == "":
+                    email_error = validate_email_re(email)
+                    if email_error != "":
+                        email = ""
+            if not username_error and not password_error and \
+                not validate_error and not email_error:
+                password = ""
+                val_password = ""
+                new_user = User(username,email,password)
+                db.session.add(new_user)
+                db.session.commit()
+                session['username'] = username
+                return redirect('/blog')           
+            else:
+                return render_template('register.html', 
+                    title="Register", username_error = username_error,
+                    password_error =password_error, 
+                    validate_error=validate_error,
+                    email_error=email_error, username = username,
+                    password = "", verify = "",
+                    email = email)   
+            
         else:
             return '<h1>Duplicate user </h1>'
 
-    return render_template('register.html')
+    return render_template('register.html', 
+                    title="Register", username_error = '',
+                    password_error ='', 
+                    validate_error='',
+                    email_error='', username = '',
+                    password = '', verify = '',
+                    email = '')   
 
 @app.route('/logout')
 def logout():
-    del session['email']
-    return redirect('/login')
-        
-@app.route('/blog', methods=['GET'])
-def index():
+    del session['username']
+    return redirect('/')
 
+@app.route("/", methods=['GET'])
+def index():
+    users = User.query.all()
+    return render_template("display_users.html", title = "Blog authors", users=users)
+        
+@app.route('/blog', methods=['GET', 'POST'])
+def blog_list():
+#this has to list all the users so we can list all their blogs
     blog_id = request.args.get('blog_id', '')
     if blog_id == "":
         blogs = Blog.query.order_by(Blog.blog_id.desc()).all()
@@ -105,7 +182,7 @@ def add_blog():
 @app.route('/newpost', methods=['POST'])
 def added_blog():
 
-    owner = User.query.filter_by(email=session['email']).first()
+    owner = User.query.filter_by(username=session['username']).first()
     date_stamp = datetime.datetime.now()
     blog_title = request.form['blog_title']
     blog = request.form['blog']

@@ -3,14 +3,14 @@
 {% block content %}
 <h1>{{title}}</h1>
 <hr>
-{% if blogs|length == 0 %}
-    <p>No blogs added</p>
+    {% if blogs|length == 0 %}
+        <p>No blogs added</p>
     {% else %}
-
         <ul>
             {% for blog in blogs %}
             <h2><a href="/blog?blog_id={{blog.blog_id}}">{{blog.blog_title}}</a></h2>
             <p>{{blog.blog}}</p>
+            <p>author by </p>
             <hr>
             {% endfor %}
         </ul>
