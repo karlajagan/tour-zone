@@ -1,4 +1,9 @@
 
+from __main__ import app
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy(app)
+
 class Blog(db.Model):
 
     blog_id = db.Column(db.Integer, primary_key=True)
