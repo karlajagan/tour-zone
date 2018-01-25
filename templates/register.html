@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+    <div class="jumbotron text-center">
+        <h1>Sign Up</h1>
+    </div>
     <form action='/register' method='post'>
-        <h1>Sign Up Page</h1>
-        <hr>
+        
         <br>
         <p>* fields are mandatory</p>
         <br>
-        <label>Username: *
-            <input name="username" type="text" value='{{username}}'/>
-        </label> 
-            <p class="error">{{username_error}}</p>
-        <label>Password: *
-            <input name="password" type="password"  value='{{password}}'/>
-        </label>
-            <p class="error">{{password_error}}</p>       
-        <label>Confirm Password: *
-                <input name="verify" type="password" value='{{verify}}'/>
-        </label>
-            <p class="error">{{validate_error}}</p>
-        <label>Email:
-                <input name="email" type="text" value='{{email}}' />
-        </label> 
+        <div class="form-group">
+            <label for="username">Username: *</label>
+            <input name='username' type="text" class="form-control" id="username" value='{{username}}'/>
+        </div>
+        <p class="error">{{username_error}}</p>
+        <div class="form-group">
+            <label for="password">Password: *</label>
+            <input name='password' type="password" class="form-control" id="password" value='{{password}}'/>
+        </div>
+        <p class="error">{{password_error}}</p>   
+        <div class="form-group">
+            <label for="verify">Confirm password: *</label>
+            <input name='verify' type="password" class="form-control" id="verify" value='{{verify}}'/>
+        </div>
+        <p class="error">{{validate_error}}</p>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input name='email' type="text" class="form-control" id="email" value='{{email}}'>
+        </div>
             <p class="error">{{email_error}}</p>
         <input type = "submit" value="Register" />
         <br>

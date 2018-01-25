@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{title}}</h1>
-<hr>
+<div class="jumbotron text-center">
+        <h1>{{title}}</h1>
+</div>
 {% if users|length == 0 %}
     <p>No users added</p>
 {% else %}
 
     <ul>
         {% for user in users %}
-        
-        <p>{{user.username}}</p>
-        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3><a href="/blog?user={{user.username}}">{{user.username}}</a></h3></div>
+        </div>
         {% endfor %}
     </ul>
 
 {% endif %}
 
-{% endblock %}
+{% endblock %} 

@@ -67,7 +67,7 @@ def validate_email_re(field):
 def require_login():
     allowed_routes = ['login', 'register', 'index', 'blog_list']
     if request.endpoint not in allowed_routes and 'username' not in session:
-        return redirect('/') 
+        return redirect('/login') 
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -77,16 +77,21 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
             session['username'] = username
-            flash('logged in')
             return redirect('/blog')
         else:
             flash('User password is incorrect, or user does not exist', 'error')
 
-    return render_template('login.html')
+    if session.get('username') is not None:
+        del session['username']
+
+    return render_template('login.html', title = "Blog Login" )
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    if session.get('username') is not None:
+        del session['username']
     if request.method == 'POST':
+        
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
@@ -119,14 +124,14 @@ def register():
                     if email_error != "":
                         email = ""
             if not username_error and not password_error and \
-                not validate_error and not email_error:
-                password = ""
-                val_password = ""
+                not validate_error and not email_error:                
                 new_user = User(username,email,password)
                 db.session.add(new_user)
                 db.session.commit()
-                session['username'] = username
-                return redirect('/blog')           
+                password = ""
+                val_password = ""
+                # session['username'] = username
+                return redirect('/login')           
             else:
                 return render_template('register.html', 
                     title="Register", username_error = username_error,
@@ -154,17 +159,37 @@ def logout():
 
 @app.route("/", methods=['GET'])
 def index():
+    if session.get('username') is not None:
+        flash('logged in as '+session['username'])
+    else:
+        flash('not logged in') 
     users = User.query.all()
     return render_template("display_users.html", title = "Blog authors", users=users)
         
 @app.route('/blog', methods=['GET', 'POST'])
 def blog_list():
-#this has to list all the users so we can list all their blogs
+    #add all the blogs from a specific author
     blog_id = request.args.get('blog_id', '')
-    if blog_id == "":
-        blogs = Blog.query.order_by(Blog.blog_id.desc()).all()
+ 
+    username = ''
+    if session.get('username') is not None:
+        flash('logged in as '+session['username'])
+    else:
+        flash('not logged in')       
+        # username = session['username']
+    username_arg = request.args.get('user', '')
+    if username_arg != '':
+        username = username_arg
+
+    if username != '':
+        owner = User.query.filter_by(username=username).first()
+        blogs = Blog.query.order_by(Blog.blog_id.desc()).filter_by(owner=owner).all()
         return render_template('display_blogs.html', title="The Best Blogs Online", 
             blogs=blogs)
+    if blog_id == '':
+        blogs = Blog.query.order_by(Blog.blog_id.desc()).all()
+        return render_template('display_blogs.html', title="The Best Blogs Online", 
+            blogs=blogs)        
     else:
         blog_id = int(blog_id)
         blog = Blog.query.get(blog_id)
@@ -174,7 +199,7 @@ def blog_list():
 
 @app.route('/newpost', methods=['GET'])
 def add_blog():
-
+    flash('logged in as '+session['username'])
     return render_template('add-a-blog.html', title="Add a Blog", 
         blog_title="" , blog="" , title_error="" , blog_error="")
 

@@ -1,23 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>The Best Blogs Online Login</h1>
+<div class="jumbotron text-center">
+        <h1>{{title}}</h1>
+</div>
+
 <p>If you don't have an account, you may <a href="/register">register</a> for one</p>
 <form action="/login" method="post">
-    <table>
-        <tr>
-            <td><label for="username">Username</label></td>
-            <td>
-                <input name="username" type="username" value="{{ username }}">
-            </td>
-        </tr>
-        <tr>
-            <td><label for="password">Password</label></td>
-            <td>
-                <input name="password" type="password">
-            </td>
-        </tr>
-    </table>
+    <div class="form-group">
+            <label for="username">Username:</label>
+            <input name='username' type="text" class="form-control" id="usr" value='{{ username }}'>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input name='password' type="password" class="form-control" id="pwd">
+          </div>
+    
     <input type="submit" value="Login">
 </form>
 {% endblock %}
