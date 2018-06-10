@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h1>Add a Tour</h1>
+</div>
+    <form method='post'>
+        
+        <div class="container">
+        <label>   
+            Tour <br>
+            <input type="text" name='tour' size="30" class="main" value="{{tour}}"/>
+        </label>
+        <p class="error">{{tour_error}}</p>
+        <br>
+        <label>
+            attractions <br>
+            <textarea name='attraction' rows="5" cols="60" value="{{attraction}}"></textarea>
+        </label>
+        <p class="error">{{attraction_error}}</p>       
+        <br>
+        <input type="submit" value='Add Tour' />
+        </div>
+    </form>
+
+    <hr />
+
+{% endblock %}
