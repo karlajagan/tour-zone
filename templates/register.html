@@ -9,6 +9,16 @@
         <p>* fields are mandatory</p>
         <br>
         <div class="form-group">
+            <label for="name">First name: *</label>
+            <input name='name' type="text" class="form-control" id="name" value='{{name}}'/>
+        </div>
+        <p class="error">{{name_error}}</p>
+        <div class="form-group">
+            <label for="last_name">Last Name: *</label>
+            <input name='last_name' type="text" class="form-control" id="last_name" value='{{last_name}}'/>
+        </div>
+        <p class="error">{{last_name_error}}</p>
+        <div class="form-group">
             <label for="username">Username: *</label>
             <input name='username' type="text" class="form-control" id="username" value='{{username}}'/>
         </div>
@@ -24,10 +34,29 @@
         </div>
         <p class="error">{{validate_error}}</p>
         <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email">Email: *</label>
             <input name='email' type="text" class="form-control" id="email" value='{{email}}'>
         </div>
             <p class="error">{{email_error}}</p>
+        <div class="form-group">
+            <label for="primary_phone">Primary phone you will use: *</label>
+            <input name='primary_phone' type="text" class="form-control" id="primary_phone" value='{{primary_phone}}'/>
+        </div>
+        <p class="error">{{primary_phone_error}}</p>
+        <div class="form-group">
+            <label for="street_address">Street_address: *</label>
+            <input name='street_address' type="text" class="form-control" id="street_address" value='{{street_address}}'/>
+        </div>
+        <!-- how to do a dropdown to fill up the data -->
+        <div class="form-group">
+            <label for="city_id">City code: *</label>
+            <input name='city_id' type="text" class="form-control" id="city_id" value='{{city_id}}'/>
+        </div>
+        <!--<p class="error">{{city_id_error}}</p>-->
+        <div class="form-group">
+            <label for="driver_license">Valid driver's license if offering driving tours: *</label>
+            <input name='driver_license' type="text" class="form-control" id="driver_license" value='{{driver_license}}'/>
+        </div>
         <input type = "submit" value="Register" />
         <br>
 

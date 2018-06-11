@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy(app)
 
+
 class Blog(db.Model):
 
     blog_id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +18,7 @@ class Blog(db.Model):
         self.blog = blog
         self.date_stamp = date_stamp
         self.owner = owner
+
 
 class User(db.Model):
 

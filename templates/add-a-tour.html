@@ -19,6 +19,31 @@
         </label>
         <p class="error">{{attraction_error}}</p>       
         <br>
+        <label>   
+            Level of difficulty <br>
+            <input type="text" name='difficulty_level' size="30" class="main" value="{{difficulty_level}}"/>
+        </label>
+        <!--<p class="error">{{tour_error}}</p>-->
+        <br>
+        <label>   
+            Days and times available <br>
+            <input type="text" name='availability' size="30" class="main" value="{{availability}}"/>
+        </label>
+        <br>
+        <label>   
+            Minimum age allowed in this tour <br>
+            <input type="text" name='min_age' size="30" class="main" value="{{min_age}}"/>
+        </label>
+        <br>
+        <label>   
+            Maximum age recommended for this tour <br>
+            <input type="text" name='max_age' size="30" class="main" value="{{max_age}}"/>
+        </label>                
+        <br>
+        <label>   
+            Code of the city <br>
+            <input type="text" name='city_id' size="10" class="main" value="{{city_id}}"/>
+        </label>
         <input type="submit" value='Add Tour' />
         </div>
     </form>
